@@ -9,11 +9,7 @@ function App() {
   const [addressInput, setAddressInput] = useState("");
   const [addressOptions, setAddressOptions] = useState([]);
 
-  const getSuggestions = value => {
-    return addressOptions;
-  };
   const getSuggestionValue = suggestion => suggestion.description;
-  // Use your imagination to render suggestions.
   const renderSuggestion = suggestion => (
     <div>
       {suggestion.description}
