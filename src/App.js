@@ -3,37 +3,63 @@ import './css/tailwind.css';
 
 function App() {
   return (
+    <div>
+    <h1 className="text-lg xl:text-2xl font-bold text-center formal-text text-gray-800">CSC 642 Summer 2020 Individual Assignment - Raviteja Guttula</h1>
+    <h2 className="text-lg xl:text-xl font-bold text-center formal-text text-gray-800">Data survey form</h2>
     <div className="flex justify-center">
-      <form className="w-full max-w-xl">
+      <form className="w-full xl:max-w-3xl max-w-xs">
+
         <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
               First Name
-      </label>
+              <span className="text-red-600">&nbsp;*</span>
+            </label>
             <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="Jane" />
             <p className="text-red-500 text-xs italic">Please fill out this field.</p>
           </div>
           <div className="w-full md:w-1/2 px-3">
             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
               Last Name
-      </label>
+              <span className="text-red-600">&nbsp;*</span>
+            </label>
             <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Doe" />
           </div>
         </div>
+        
         <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full px-3">
-            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
-              Password
-      </label>
-            <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-password" type="password" placeholder="******************" />
-            <p className="text-gray-600 text-xs italic">Make it as long and as crazy as you'd like</p>
+            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-address">
+              Address
+            </label>
+            <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-password" type="text" placeholder="1600 Holloway Ave, San Francisco, CA 94132" />
+            <p className="text-gray-600 text-xs italic">Just enter the street address.</p>
           </div>
         </div>
+
+        <div className="flex flex-wrap -mx-3 mb-6">
+          <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+              Email
+              <span className="text-red-600">&nbsp;*</span>
+            </label>
+            <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="Jane" />
+            <p className="text-red-500 text-xs italic">Please fill out this field.</p>
+          </div>
+          <div className="w-full md:w-1/2 px-3">
+            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+              Confirm Email
+              <span className="text-red-600">&nbsp;*</span>
+            </label>
+            <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Doe" />
+          </div>
+        </div>
+
         <div className="flex flex-wrap -mx-3 mb-2">
           <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-city">
               City
-      </label>
+        </label>
             <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-city" type="text" placeholder="Albuquerque" />
           </div>
           <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
@@ -59,6 +85,7 @@ function App() {
           </div>
         </div>
       </form>
+    </div>
     </div>
   );
 }
