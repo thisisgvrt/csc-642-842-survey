@@ -15,7 +15,11 @@ exports.handler = function (event, context, callback) {
         response.on('end', () => {
             callback(null, {
                 statusCode: 200,
-                body: body
+                body: body,
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Content-Type":"application/json"
+                }
             });
         });
     }

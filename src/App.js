@@ -27,7 +27,7 @@ function App() {
   };
 
   const onSuggestionsFetchRequested = ({ value }) => {
-    axios.get(`http://127.0.0.1:8888/.netlify/functions/places?query=${value}`)
+    axios.get(`/.netlify/functions/places?query=${value}`)
       .then((res) => {
         console.log(res.data.predictions)
         setAddressOptions(res.data.predictions);
