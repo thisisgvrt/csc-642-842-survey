@@ -1,9 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useReducer } from 'react';
 import axios from 'axios';
 
 import './css/tailwind.css';
 
 import Autosuggest from 'react-autosuggest';
+
+function validateEmail(email) {
+  const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(email);
+}
+
+function validatePhone(phoneNum){
+  const re = /^\(?[- ]?(\d{3})[- ]?(\d{4})$/;
+  return re.test(phoneNum);
+}
 
 function App() {
   const [addressInput, setAddressInput] = useState("");
@@ -15,13 +25,11 @@ function App() {
       {suggestion.description}
     </div>
   );
-
   const inputProps = {
     placeholder: '1600 Amphitheatre Parkway, Mountain View, CA, USA',
     value: addressInput,
     onChange: (event, { newValue }) => setAddressInput(newValue)
   };
-
   const onSuggestionsFetchRequested = ({ value }) => {
     axios.get(`/.netlify/functions/places?query=${value}`)
       .then((res) => {
@@ -30,12 +38,50 @@ function App() {
       })
       .catch(e => "error loading the list listing" + e)
   };
-
   // Autosuggest will call this function every time you need to clear suggestions.
   const onSuggestionsClearRequested = () => {
     setAddressOptions([])
   };
 
+  const [firstName, setFirstName] = useState("");
+  const isFirstNameValid = firstName.length <=40;
+  const [lastName, setLastName] = useState("");
+  const isLastNameValid = lastName.length <=40;
+  const [educationLevel, setEducationLevel] = useState("");
+  
+  const [heightFeet, setHeightFeet] = useState("");
+  const [heightInches, setHeightInches] = useState("");
+
+  const [dateOfBirth, setDateOfBirth] = useState("");
+  let isDateOfBirthValid;
+  if (isNaN(parseInt(dateOfBirth))){
+    isDateOfBirthValid = (dateOfBirth === "")
+  } else {
+    isDateOfBirthValid = (parseInt(dateOfBirth) > 0 && parseInt(dateOfBirth) < 31)
+  }
+
+  console.log(dateOfBirth, isDateOfBirthValid);
+  const [monthOfBirth, setMonthOfBirth] = useState("");
+  const [yearOfBirth, setYearOfBirth] = useState("");
+  const isYearOfBirthValid = true;
+
+  const [email, setEmail] = useState(null);
+  const [confirmationEmail, setConfirmationEmail] = useState(null);
+  const [isEmailValid, setEmailValidity] = useState(true);
+  const [isConfirmationEmailValid, setConfirmationEmailValidity] = useState(true);
+
+  const [phoneNumber, setPhoneNumber] = useState(null);
+  const [isPhoneNumberValid, setPhoneNumberValidity] = useState(true);
+
+  if(!isEmailValid && validateEmail(email)){
+    setEmailValidity(true);
+  }
+
+  if(!isConfirmationEmailValid && (email === confirmationEmail)){
+    setConfirmationEmailValidity(true);
+  }
+
+  console.log({isEmailValid, email});
   return (
     <div className="pt-2 lg:pt-5">
       <h1 className="text-lg xl:text-2xl font-bold text-center formal-text text-gray-800">CSC 642 Summer 2020 Individual Assignment - Raviteja Guttula</h1>
@@ -45,33 +91,35 @@ function App() {
           <h4 className="formal-text text-sm font-semibold"> Personal Details </h4>
           <div className="flex flex-wrap -mx-3 mb-6 pt-3">
             <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="first-name">
                 First Name
               <span className="text-red-600">&nbsp;*</span>
               </label>
-              <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="Jane" />
-              <p className="text-red-500 text-xs italic">Please fill out this field.</p>
+              <input className={"appearance-none block w-full bg-gray-200 text-gray-700 border " + (isFirstNameValid ? "border-gray-200" : "border-red-500") +" rounded py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white"} id="first-name" type="text" placeholder="Jane" value={firstName} onChange={event => setFirstName(event.target.value)} />
+              <p className={"text-xs italic "+(isFirstNameValid ? "text-gray-600" : "text-red-500")}>{isFirstNameValid ? "Upto 40 characters are allowed.": "Please reduce the character length to 40 characters"}</p>
             </div>
-            <div className="w-full md:w-1/2 px-3">
-              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="last-name">
                 Last Name
               <span className="text-red-600">&nbsp;*</span>
               </label>
-              <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Doe" />
+              <input className={"appearance-none block w-full bg-gray-200 text-gray-700 border " + (isFirstNameValid ? "border-gray-200" : "border-red-500") +" rounded py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white"} id="last-name" type="text" placeholder="Doe" value={lastName} onChange={event => setLastName(event.target.value)} />
+              <p className={"text-xs italic "+(isLastNameValid ? "text-gray-600" : "text-red-500")}>{isLastNameValid ? "Upto 40 characters are allowed.": "Please reduce the character length to 40 characters"}</p>
             </div>
           </div>
 
           <div className="flex flex-wrap -mx-3 mb-2">
             <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
+              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="education-level">
                 Education-level
                 <span className="text-gray-600 text-xs">&nbsp;(Optional)</span>
               </label>
               <div className="relative">
-                <select className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+                <select className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="education-level" onChange={event => setEducationLevel(event.target.value)} value={educationLevel}>
+                  <option></option>
                   <option>High School</option>
                   <option>College</option>
-                  <option>Geaduate studies</option>
+                  <option>Graduate studies</option>
                   <option>Ph.D</option>
                 </select>
                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -80,36 +128,36 @@ function App() {
               </div>
             </div>
             <div className="w-1/2 md:w-1/6 px-3 mb-6 md:mb-0">
-              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="birthYear">
+              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="height-feet">
                 Height
                 <span className="text-gray-600 text-xs">&nbsp;(Optional)</span>
               </label>
-              <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="birthYear" type="number" placeholder="6" />
+              <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="height-feet" type="number" placeholder="6" value={heightFeet} onChange={event => setHeightFeet(event.target.value)} />
               <p className="text-gray-600 text-xs text-left italic">Feet</p>
             </div>
             <div className="w-1/2 md:w-1/6 px-3 mb-6 md:mb-0">
-              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="birthYear">
+              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="height-inches">
                 &nbsp;
               </label>
-              <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="birthYear" type="number" placeholder="00" />
+              <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="height-inches" type="number" placeholder="00" value={heightInches} onChange={event => setHeightInches(event.target.value)} />
               <p className="text-gray-600 text-xs text-left italic">Inches</p>
             </div>
           </div>
 
           <div className="flex flex-wrap -mx-3 mb-2">
-            <div className="w-full md:w-1/6 px-3 mb-6 md:mb-0">
-              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-city">
+            <div className="w-full md:w-1/4 px-3 mb-6 md:mb-0">
+              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="date-of-birth">
                 Date-of-birth
               </label>
-              <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-city" type="number" placeholder="01" />
-              <p className="text-gray-600 text-xs font-italic text-left italic">Date</p>
+              <input className={"appearance-none block w-full bg-gray-200 text-gray-700 border " + (isDateOfBirthValid ? "border-gray-200" : "border-red-500") +" rounded py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white"} id="date-of-birth" type="number" placeholder="01" value={dateOfBirth} onChange={event => setDateOfBirth(event.target.value)}/>
+              <p className={"text-xs italic "+(isDateOfBirthValid ? "text-gray-600" : "text-red-500")}>{isDateOfBirthValid ? "Date": "Please enter a valid date"}</p>
             </div>
             <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 invisible" for="grid-state">
+              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 invisible" htmlFor="month-of-birth">
                 Month
               </label>
               <div className="relative">
-                <select className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+                <select className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="month-of-birth">
                   <option>January</option>
                   <option>Febraury</option>
                   <option>March</option>
@@ -129,12 +177,12 @@ function App() {
               </div>
               <p className="text-gray-600 text-xs font-italic italic text-left">Month</p>
             </div>
-            <div className="w-full md:w-1/6 px-3 mb-6 md:mb-0">
-              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 invisible" htmlFor="birthYear">
+            <div className="w-full md:w-1/4 px-3 mb-6 md:mb-0">
+              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 invisible" htmlFor="year-of-birth">
                 Year
               </label>
-              <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="birthYear" type="number" placeholder="1992" />
-              <p className="text-gray-600 text-xs font-italic italic text-left">Year</p>
+              <input className={"appearance-none block w-full bg-gray-200 text-gray-700 border " + (isYearOfBirthValid ? "border-gray-200" : "border-red-500") +" rounded py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white"} type="number" placeholder="1992" value={yearOfBirth} onChange={event => setYearOfBirth(event.target.value)}  />
+              <p className={"text-xs italic "+(isYearOfBirthValid ? "text-gray-600" : "text-red-500")}>{isYearOfBirthValid ? "Year": "Please enter a valid year"}</p>
             </div>
           </div>
 
@@ -144,11 +192,12 @@ function App() {
 
           <div className="flex flex-wrap -mx-3 mb-6 pt-4">
             <div className="w-full px-3">
-              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-address">
+              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="address">
                 Address
                 <span className="text-red-600">&nbsp;*</span>
               </label>
               <Autosuggest
+                id="address"
                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 suggestions={addressOptions}
                 onSuggestionsFetchRequested={onSuggestionsFetchRequested}
@@ -163,45 +212,45 @@ function App() {
 
           <div className="flex flex-wrap -mx-3 mb-6">
             <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="email">
                 Email
               <span className="text-red-600">&nbsp;*</span>
               </label>
-              <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="Jane" />
-              <p className="text-gray-600 text-xs italic">We won't send any spam or share your email with others.</p>
+              <input className={"appearance-none block w-full bg-gray-200 text-gray-700 border " + (isEmailValid ? "border-gray-200" : "border-red-500") +" rounded py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white"} id="email" type="email" placeholder="Jane.doe@email.com" value={email} onChange={event => setEmail(event.target.value)} onBlur={event => setEmailValidity(validateEmail(email))}/>
+              <p className={"text-xs italic "+(isEmailValid ? "text-gray-600" : "text-red-500")}>{isEmailValid ? "We won't send any spam or share your email with others.": "Please enter a valid email ex: jane.doe@email.com"}</p>
             </div>
             <div className="w-full md:w-1/2 px-3">
-              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="email-confirmation">
                 Confirm Email
               <span className="text-red-600">&nbsp;*</span>
               </label>
-              <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Doe" />
+              <input className={"appearance-none block w-full bg-gray-200 text-gray-700 border " + (isConfirmationEmailValid ? "border-gray-200" : "border-red-500") +" rounded py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white"} id="email-confirmation" type="email" placeholder="Jane.doe@email.com" value={confirmationEmail} onChange={
+              event => setConfirmationEmail(event.target.value)} onBlur={event => setConfirmationEmailValidity(email === confirmationEmail) }/>
+              <p className={"text-xs italic "+(isConfirmationEmailValid ? "text-gray-600" : "text-red-500")}>{isConfirmationEmailValid ? "": "Both emails don't match"}</p>
             </div>
           </div>
 
           <div className="flex flex-wrap -mx-3 mb-6">
             <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="phone-number">
                 Phone number
               <span className="text-red-600">&nbsp;*</span>
               </label>
-              <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="phone" placeholder="415-0000" />
-              <p className="text-red-500 text-xs italic">Please fill out this field.</p>
+              <input className={"appearance-none block w-full bg-gray-200 text-gray-700 border " + (isPhoneNumberValid ? "border-gray-200" : "border-red-500") +" rounded py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white"} id="phone-number" value={phoneNumber} onChange={event => setPhoneNumber(event.target.value)} onBlur={event => setPhoneNumberValidity(validatePhone(phoneNumber))} type="phone" placeholder="415-0000" />
+              <p className={"text-xs italic "+(isPhoneNumberValid ? "text-gray-600" : "text-red-500")}>{isPhoneNumberValid ? "We won't spam you with marketing calls": "Please enter a valid phone number with 7 digits"}</p>
             </div>
           </div>
 
           <div className="flex flex-wrap -mx-3 mb-6">
             <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-              <label class="w-full block text-gray-700 font-bold">
-                <input class="mr-2 leading-tight" type="checkbox" />
-                <span class="text-md">
+              <label className="w-full block text-gray-700 font-bold">
+                <input className="mr-2 leading-tight" type="checkbox" />
+                <span className="text-md">
                   I agree to the <span className="text-blue-500 underline cursor-pointer">terms of service</span>
                 </span>
               </label>
             </div>
           </div>
-
-
         </form>
       </div>
     </div>
