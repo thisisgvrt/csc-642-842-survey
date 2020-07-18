@@ -93,8 +93,37 @@ function App() {
     setConfirmationEmailValidity(true);
   }
 
-  const [isRecaptachaCompleted, setRecaptachaCompleted] = useState(false);
+  const [isRecaptachaCompleted, setRecaptachaCompleted] = useState(true);
 
+  console.log(isValidDate);
+
+  const submitForm = (event) => {
+    if(isDateOfBirthValid && isYearOfBirthValid && isEmailValid && isConfirmationEmailValid && isValidDate && isFirstNameValid && isLastNameValid){
+      console.log("Here");
+      localStorage.setItem('data', JSON.stringify({
+        firstName,
+        lastName,
+        educationLevel,
+        heightFeet,
+        heightInches,
+        dateOfBirth,
+        monthOfBirth,
+        yearOfBirth,
+        addressInput,
+        email,
+        confirmationEmail,
+        phoneNumber
+      }));
+      event.preventDefault();
+      event.stopPropagation();
+      return false;
+    } else {
+      console.log("Data is not valid");
+      return false;
+    }
+  }
+
+  
   return (
     <div className="pt-2 lg:pt-5">
       <h1 className="text-lg xl:text-2xl font-bold text-center formal-text text-gray-800">CSC 642 Summer 2020 Individual Assignment - Raviteja Guttula</h1>
@@ -161,6 +190,7 @@ function App() {
             <div className="w-full md:w-1/4 px-3 mb-0">
               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="date-of-birth">
                 Date-of-birth
+                <span className="text-red-600">&nbsp;*</span>
               </label>
               <input className={"appearance-none block w-full bg-gray-200 text-gray-700 border " + (isDateOfBirthValid ? "border-gray-200" : "border-red-500") + " rounded py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white"} id="date-of-birth" type="number" placeholder="01" value={dateOfBirth} onChange={event => setDateOfBirth(event.target.value)} />
               <p className={"text-xs italic " + (isDateOfBirthValid ? "text-gray-600" : "text-red-500")}>{isDateOfBirthValid ? "Date" : "Please enter a valid date"}</p>
@@ -171,6 +201,7 @@ function App() {
               </label>
               <div className="relative">
                 <select className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="month-of-birth" value={monthOfBirth} onChange={event => setMonthOfBirth(event.target.value)}>
+                  <option></option>
                   <option>January</option>
                   <option>February</option>
                   <option>March</option>
@@ -276,7 +307,7 @@ function App() {
 
           <div className="flex flex-wrap -mx-3 mb-6">
             <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-              <button class={"bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none " + (isRecaptachaCompleted ? "focus:shadow-outline  hover:bg-blue-700": "cursor-not-allowed")} type="button">
+              <button class={"bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none " + (isRecaptachaCompleted ? "focus:shadow-outline  hover:bg-blue-700": "cursor-not-allowed")} type="button" onClick={submitForm}>
                 Submit
               </button>
             </div>
