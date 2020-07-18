@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import moment from 'moment';
 
 import ReCAPTCHA from "react-google-recaptcha";
 
@@ -54,18 +55,28 @@ function App() {
   const [heightFeet, setHeightFeet] = useState("");
   const [heightInches, setHeightInches] = useState("");
 
-  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState(null);
   let isDateOfBirthValid;
-  if (isNaN(parseInt(dateOfBirth))) {
+  if(dateOfBirth === null){
+    isDateOfBirthValid = true;
+  }
+  else if (isNaN(parseInt(dateOfBirth))) {
     isDateOfBirthValid = (dateOfBirth === "")
   } else {
     isDateOfBirthValid = (parseInt(dateOfBirth) > 0 && parseInt(dateOfBirth) <= 31)
   }
 
-  const [monthOfBirth, setMonthOfBirth] = useState("");
-  const [yearOfBirth, setYearOfBirth] = useState("");
-  const isYearOfBirthValid = true;
+  const [monthOfBirth, setMonthOfBirth] = useState(null);
+  const [yearOfBirth, setYearOfBirth] = useState(null);
+  let isYearOfBirthValid = true;
 
+  const isValidDate = moment(`${dateOfBirth}-${monthOfBirth}-${yearOfBirth}`, 'DD-MMMM-YYYY', true).isValid();
+
+  if (yearOfBirth !== null && monthOfBirth !== null && dateOfBirth !== null){
+    isDateOfBirthValid = isValidDate;
+    isYearOfBirthValid = isValidDate;
+  }
+  
   const [email, setEmail] = useState(null);
   const [confirmationEmail, setConfirmationEmail] = useState(null);
   const [isEmailValid, setEmailValidity] = useState(true);
@@ -161,7 +172,7 @@ function App() {
               <div className="relative">
                 <select className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="month-of-birth" value={monthOfBirth} onChange={event => setMonthOfBirth(event.target.value)}>
                   <option>January</option>
-                  <option>Febraury</option>
+                  <option>February</option>
                   <option>March</option>
                   <option>April</option>
                   <option>May</option>
