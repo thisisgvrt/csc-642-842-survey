@@ -89,8 +89,8 @@ function App() {
       <div className="flex justify-center pt-4 lg:pt-5">
         <form className="w-full xl:max-w-3xl max-w-xs">
           <h4 className="formal-text text-sm font-semibold"> Personal Details </h4>
-          <div className="flex flex-wrap -mx-3 mb-6 pt-3">
-            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+          <div className="flex flex-wrap -mx-3 mb-3 pt-3">
+            <div className="w-full md:w-1/2 px-3 mb-3 md:mb-0">
               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="first-name">
                 First Name
               <span className="text-red-600">&nbsp;*</span>
@@ -98,7 +98,7 @@ function App() {
               <input className={"appearance-none block w-full bg-gray-200 text-gray-700 border " + (isFirstNameValid ? "border-gray-200" : "border-red-500") +" rounded py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white"} id="first-name" type="text" placeholder="Jane" value={firstName} onChange={event => setFirstName(event.target.value)} />
               <p className={"text-xs italic "+(isFirstNameValid ? "text-gray-600" : "text-red-500")}>{isFirstNameValid ? "Upto 40 characters are allowed.": "Please reduce the character length to 40 characters"}</p>
             </div>
-            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <div className="w-full md:w-1/2 px-3 mb-3 md:mb-0">
               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="last-name">
                 Last Name
               <span className="text-red-600">&nbsp;*</span>
@@ -109,7 +109,7 @@ function App() {
           </div>
 
           <div className="flex flex-wrap -mx-3 mb-2">
-            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <div className="w-full md:w-1/2 px-3 mb-3 md:mb-0">
               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="education-level">
                 Education-level
                 <span className="text-gray-600 text-xs">&nbsp;(Optional)</span>
@@ -145,14 +145,14 @@ function App() {
           </div>
 
           <div className="flex flex-wrap -mx-3 mb-2">
-            <div className="w-full md:w-1/4 px-3 mb-6 md:mb-0">
+            <div className="w-full md:w-1/4 px-3 mb-0">
               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="date-of-birth">
                 Date-of-birth
               </label>
               <input className={"appearance-none block w-full bg-gray-200 text-gray-700 border " + (isDateOfBirthValid ? "border-gray-200" : "border-red-500") +" rounded py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white"} id="date-of-birth" type="number" placeholder="01" value={dateOfBirth} onChange={event => setDateOfBirth(event.target.value)}/>
               <p className={"text-xs italic "+(isDateOfBirthValid ? "text-gray-600" : "text-red-500")}>{isDateOfBirthValid ? "Date": "Please enter a valid date"}</p>
             </div>
-            <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+            <div className="w-full md:w-1/3 px-3 mb-0">
               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 invisible" htmlFor="month-of-birth">
                 Month
               </label>
@@ -177,7 +177,7 @@ function App() {
               </div>
               <p className="text-gray-600 text-xs font-italic italic text-left">Month</p>
             </div>
-            <div className="w-full md:w-1/4 px-3 mb-6 md:mb-0">
+            <div className="w-full md:w-1/4 px-3 mb-0">
               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 invisible" htmlFor="year-of-birth">
                 Year
               </label>
@@ -188,7 +188,7 @@ function App() {
 
 
 
-          <h4 className="formal-text text-sm font-semibold pt-3"> Contact Details </h4>
+          <h4 className="formal-text text-sm font-semibold pt-8"> Contact Details </h4>
 
           <div className="flex flex-wrap -mx-3 mb-6 pt-4">
             <div className="w-full px-3">
@@ -211,7 +211,7 @@ function App() {
           </div>
 
           <div className="flex flex-wrap -mx-3 mb-6">
-            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <div className="w-full md:w-1/2 px-3 mb-3 md:mb-0">
               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="email">
                 Email
               <span className="text-red-600">&nbsp;*</span>
@@ -231,7 +231,7 @@ function App() {
           </div>
 
           <div className="flex flex-wrap -mx-3 mb-6">
-            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <div className="w-full md:w-1/2 px-3 mb-3 md:mb-0">
               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="phone-number">
                 Phone number
               <span className="text-red-600">&nbsp;*</span>
