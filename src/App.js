@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
 import ReCAPTCHA from "react-google-recaptcha";
