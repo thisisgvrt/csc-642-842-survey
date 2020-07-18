@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useHistory } from "react-router-dom";
+
 import axios from 'axios';
 import moment from 'moment';
 
@@ -19,6 +21,7 @@ function validatePhone(phoneNum) {
 }
 
 function Form() {
+    const history = useHistory();
     const [addressInput, setAddressInput] = useState("");
     const [addressOptions, setAddressOptions] = useState([]);
 
@@ -117,9 +120,7 @@ function Form() {
                 confirmationEmail,
                 phoneNumber
             }));
-            event.preventDefault();
-            event.stopPropagation();
-            return false;
+            history.push("/review");
         } else {
             console.log("Data is not valid");
             return false;
