@@ -101,8 +101,6 @@ function Form() {
 
     const [isTOSChecked, setTOSFlag] = useState(false);
 
-    console.log(isTOSChecked);
-
     const submitForm = (event) => {
         if (isDateOfBirthValid && isYearOfBirthValid && isEmailValid && isConfirmationEmailValid && isValidDate && isFirstNameValid && isLastNameValid && isTOSChecked) {
             console.log("Data is valid");
@@ -118,9 +116,10 @@ function Form() {
                 addressInput,
                 email,
                 confirmationEmail,
-                phoneNumber
+                phoneNumber,
+                isTOSChecked
             }));
-            history.push("/review");
+            history.push(`/review?${Date.now()}`);
         } else {
             console.log("Data is not valid");
             return false;
@@ -181,7 +180,7 @@ function Form() {
                 <div className="w-1/2 md:w-1/6 px-3 mb-6 md:mb-0">
                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="height-inches">
                         &nbsp;
-              </label>
+                </label>
                     <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="height-inches" type="number" placeholder="00" value={heightInches} onChange={event => setHeightInches(event.target.value)} />
                     <p className="text-gray-600 text-xs text-left italic">Inches</p>
                 </div>
@@ -312,7 +311,7 @@ function Form() {
                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                     <button class={"bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none " + (isRecaptachaCompleted ? "focus:shadow-outline  hover:bg-blue-700" : "cursor-not-allowed")} type="button" onClick={submitForm}>
                         Submit
-              </button>
+                    </button>
                 </div>
             </div>
         </form>

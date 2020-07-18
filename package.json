@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^7.1.2",
     "autoprefixer": "^9.8.5",
     "axios": "^0.19.2",
+    "google-maps-react": "^2.0.6",
     "http-proxy-middleware": "^1.0.5",
     "moment": "^2.27.0",
     "postcss-cli": "^7.1.1",
@@ -15,6 +16,7 @@
     "react-autosuggest": "^10.0.2",
     "react-dom": "^16.13.1",
     "react-google-recaptcha": "^2.1.0",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "tailwindcss": "^1.5.1"
   },

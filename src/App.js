@@ -19,12 +19,8 @@ function App() {
         <h2 className="pt-1 lg:pt-3 text-lg xl:text-xl font-bold text-center formal-text text-gray-800">Data survey form</h2>
         <div className="flex justify-center pt-4 lg:pt-5">
           <Switch>
-            <Route exact path="/">
-              <Form />
-            </Route>
-            <Route path="/review">
-              <Review />
-            </Route>
+            <Route exact path="/" component={Form} />
+            <Route path="/review" component={Review} />
           </Switch>
         </div>
       </div>
