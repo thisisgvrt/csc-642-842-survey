@@ -1,6 +1,8 @@
 import React, { useState, useReducer } from 'react';
 import axios from 'axios';
 
+import ReCAPTCHA from "react-google-recaptcha";
+
 import './css/tailwind.css';
 
 import Autosuggest from 'react-autosuggest';
@@ -10,7 +12,7 @@ function validateEmail(email) {
   return re.test(email);
 }
 
-function validatePhone(phoneNum){
+function validatePhone(phoneNum) {
   const re = /^\(?[- ]?(\d{3})[- ]?(\d{4})$/;
   return re.test(phoneNum);
 }
@@ -44,23 +46,22 @@ function App() {
   };
 
   const [firstName, setFirstName] = useState("");
-  const isFirstNameValid = firstName.length <=40;
+  const isFirstNameValid = firstName.length <= 40;
   const [lastName, setLastName] = useState("");
-  const isLastNameValid = lastName.length <=40;
+  const isLastNameValid = lastName.length <= 40;
   const [educationLevel, setEducationLevel] = useState("");
-  
+
   const [heightFeet, setHeightFeet] = useState("");
   const [heightInches, setHeightInches] = useState("");
 
   const [dateOfBirth, setDateOfBirth] = useState("");
   let isDateOfBirthValid;
-  if (isNaN(parseInt(dateOfBirth))){
+  if (isNaN(parseInt(dateOfBirth))) {
     isDateOfBirthValid = (dateOfBirth === "")
   } else {
     isDateOfBirthValid = (parseInt(dateOfBirth) > 0 && parseInt(dateOfBirth) < 31)
   }
 
-  console.log(dateOfBirth, isDateOfBirthValid);
   const [monthOfBirth, setMonthOfBirth] = useState("");
   const [yearOfBirth, setYearOfBirth] = useState("");
   const isYearOfBirthValid = true;
@@ -73,15 +74,16 @@ function App() {
   const [phoneNumber, setPhoneNumber] = useState(null);
   const [isPhoneNumberValid, setPhoneNumberValidity] = useState(true);
 
-  if(!isEmailValid && validateEmail(email)){
+  if (!isEmailValid && validateEmail(email)) {
     setEmailValidity(true);
   }
 
-  if(!isConfirmationEmailValid && (email === confirmationEmail)){
+  if (!isConfirmationEmailValid && (email === confirmationEmail)) {
     setConfirmationEmailValidity(true);
   }
 
-  console.log({isEmailValid, email});
+  const [isRecaptachaCompleted, setRecaptachaCompleted] = useState(false);
+
   return (
     <div className="pt-2 lg:pt-5">
       <h1 className="text-lg xl:text-2xl font-bold text-center formal-text text-gray-800">CSC 642 Summer 2020 Individual Assignment - Raviteja Guttula</h1>
@@ -95,16 +97,16 @@ function App() {
                 First Name
               <span className="text-red-600">&nbsp;*</span>
               </label>
-              <input className={"appearance-none block w-full bg-gray-200 text-gray-700 border " + (isFirstNameValid ? "border-gray-200" : "border-red-500") +" rounded py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white"} id="first-name" type="text" placeholder="Jane" value={firstName} onChange={event => setFirstName(event.target.value)} />
-              <p className={"text-xs italic "+(isFirstNameValid ? "text-gray-600" : "text-red-500")}>{isFirstNameValid ? "Upto 40 characters are allowed.": "Please reduce the character length to 40 characters"}</p>
+              <input className={"appearance-none block w-full bg-gray-200 text-gray-700 border " + (isFirstNameValid ? "border-gray-200" : "border-red-500") + " rounded py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white"} id="first-name" type="text" placeholder="Jane" value={firstName} onChange={event => setFirstName(event.target.value)} />
+              <p className={"text-xs italic " + (isFirstNameValid ? "text-gray-600" : "text-red-500")}>{isFirstNameValid ? "Upto 40 characters are allowed." : "Please reduce the character length to 40 characters"}</p>
             </div>
             <div className="w-full md:w-1/2 px-3 mb-3 md:mb-0">
               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="last-name">
                 Last Name
               <span className="text-red-600">&nbsp;*</span>
               </label>
-              <input className={"appearance-none block w-full bg-gray-200 text-gray-700 border " + (isFirstNameValid ? "border-gray-200" : "border-red-500") +" rounded py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white"} id="last-name" type="text" placeholder="Doe" value={lastName} onChange={event => setLastName(event.target.value)} />
-              <p className={"text-xs italic "+(isLastNameValid ? "text-gray-600" : "text-red-500")}>{isLastNameValid ? "Upto 40 characters are allowed.": "Please reduce the character length to 40 characters"}</p>
+              <input className={"appearance-none block w-full bg-gray-200 text-gray-700 border " + (isFirstNameValid ? "border-gray-200" : "border-red-500") + " rounded py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white"} id="last-name" type="text" placeholder="Doe" value={lastName} onChange={event => setLastName(event.target.value)} />
+              <p className={"text-xs italic " + (isLastNameValid ? "text-gray-600" : "text-red-500")}>{isLastNameValid ? "Upto 40 characters are allowed." : "Please reduce the character length to 40 characters"}</p>
             </div>
           </div>
 
@@ -149,8 +151,8 @@ function App() {
               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="date-of-birth">
                 Date-of-birth
               </label>
-              <input className={"appearance-none block w-full bg-gray-200 text-gray-700 border " + (isDateOfBirthValid ? "border-gray-200" : "border-red-500") +" rounded py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white"} id="date-of-birth" type="number" placeholder="01" value={dateOfBirth} onChange={event => setDateOfBirth(event.target.value)}/>
-              <p className={"text-xs italic "+(isDateOfBirthValid ? "text-gray-600" : "text-red-500")}>{isDateOfBirthValid ? "Date": "Please enter a valid date"}</p>
+              <input className={"appearance-none block w-full bg-gray-200 text-gray-700 border " + (isDateOfBirthValid ? "border-gray-200" : "border-red-500") + " rounded py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white"} id="date-of-birth" type="number" placeholder="01" value={dateOfBirth} onChange={event => setDateOfBirth(event.target.value)} />
+              <p className={"text-xs italic " + (isDateOfBirthValid ? "text-gray-600" : "text-red-500")}>{isDateOfBirthValid ? "Date" : "Please enter a valid date"}</p>
             </div>
             <div className="w-full md:w-1/3 px-3 mb-0">
               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 invisible" htmlFor="month-of-birth">
@@ -181,8 +183,8 @@ function App() {
               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 invisible" htmlFor="year-of-birth">
                 Year
               </label>
-              <input className={"appearance-none block w-full bg-gray-200 text-gray-700 border " + (isYearOfBirthValid ? "border-gray-200" : "border-red-500") +" rounded py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white"} type="number" placeholder="1992" value={yearOfBirth} onChange={event => setYearOfBirth(event.target.value)}  />
-              <p className={"text-xs italic "+(isYearOfBirthValid ? "text-gray-600" : "text-red-500")}>{isYearOfBirthValid ? "Year": "Please enter a valid year"}</p>
+              <input className={"appearance-none block w-full bg-gray-200 text-gray-700 border " + (isYearOfBirthValid ? "border-gray-200" : "border-red-500") + " rounded py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white"} type="number" placeholder="1992" value={yearOfBirth} onChange={event => setYearOfBirth(event.target.value)} />
+              <p className={"text-xs italic " + (isYearOfBirthValid ? "text-gray-600" : "text-red-500")}>{isYearOfBirthValid ? "Year" : "Please enter a valid year"}</p>
             </div>
           </div>
 
@@ -216,17 +218,17 @@ function App() {
                 Email
               <span className="text-red-600">&nbsp;*</span>
               </label>
-              <input className={"appearance-none block w-full bg-gray-200 text-gray-700 border " + (isEmailValid ? "border-gray-200" : "border-red-500") +" rounded py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white"} id="email" type="email" placeholder="Jane.doe@email.com" value={email} onChange={event => setEmail(event.target.value)} onBlur={event => setEmailValidity(validateEmail(email))}/>
-              <p className={"text-xs italic "+(isEmailValid ? "text-gray-600" : "text-red-500")}>{isEmailValid ? "We won't send any spam or share your email with others.": "Please enter a valid email ex: jane.doe@email.com"}</p>
+              <input className={"appearance-none block w-full bg-gray-200 text-gray-700 border " + (isEmailValid ? "border-gray-200" : "border-red-500") + " rounded py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white"} id="email" type="email" placeholder="Jane.doe@email.com" value={email} onChange={event => setEmail(event.target.value)} onBlur={event => setEmailValidity(validateEmail(email))} />
+              <p className={"text-xs italic " + (isEmailValid ? "text-gray-600" : "text-red-500")}>{isEmailValid ? "We won't send any spam or share your email with others." : "Please enter a valid email ex: jane.doe@email.com"}</p>
             </div>
             <div className="w-full md:w-1/2 px-3">
               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="email-confirmation">
                 Confirm Email
               <span className="text-red-600">&nbsp;*</span>
               </label>
-              <input className={"appearance-none block w-full bg-gray-200 text-gray-700 border " + (isConfirmationEmailValid ? "border-gray-200" : "border-red-500") +" rounded py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white"} id="email-confirmation" type="email" placeholder="Jane.doe@email.com" value={confirmationEmail} onChange={
-              event => setConfirmationEmail(event.target.value)} onBlur={event => setConfirmationEmailValidity(email === confirmationEmail) }/>
-              <p className={"text-xs italic "+(isConfirmationEmailValid ? "text-gray-600" : "text-red-500")}>{isConfirmationEmailValid ? "": "Both emails don't match"}</p>
+              <input className={"appearance-none block w-full bg-gray-200 text-gray-700 border " + (isConfirmationEmailValid ? "border-gray-200" : "border-red-500") + " rounded py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white"} id="email-confirmation" type="email" placeholder="Jane.doe@email.com" value={confirmationEmail} onChange={
+                event => setConfirmationEmail(event.target.value)} onBlur={event => setConfirmationEmailValidity(email === confirmationEmail)} />
+              <p className={"text-xs italic " + (isConfirmationEmailValid ? "text-gray-600" : "text-red-500")}>{isConfirmationEmailValid ? "" : "Both emails don't match"}</p>
             </div>
           </div>
 
@@ -236,8 +238,8 @@ function App() {
                 Phone number
               <span className="text-red-600">&nbsp;*</span>
               </label>
-              <input className={"appearance-none block w-full bg-gray-200 text-gray-700 border " + (isPhoneNumberValid ? "border-gray-200" : "border-red-500") +" rounded py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white"} id="phone-number" value={phoneNumber} onChange={event => setPhoneNumber(event.target.value)} onBlur={event => setPhoneNumberValidity(validatePhone(phoneNumber))} type="phone" placeholder="415-0000" />
-              <p className={"text-xs italic "+(isPhoneNumberValid ? "text-gray-600" : "text-red-500")}>{isPhoneNumberValid ? "We won't spam you with marketing calls": "Please enter a valid phone number with 7 digits"}</p>
+              <input className={"appearance-none block w-full bg-gray-200 text-gray-700 border " + (isPhoneNumberValid ? "border-gray-200" : "border-red-500") + " rounded py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white"} id="phone-number" value={phoneNumber} onChange={event => setPhoneNumber(event.target.value)} onBlur={event => setPhoneNumberValidity(validatePhone(phoneNumber))} type="phone" placeholder="415-0000" />
+              <p className={"text-xs italic " + (isPhoneNumberValid ? "text-gray-600" : "text-red-500")}>{isPhoneNumberValid ? "We won't spam you with marketing calls" : "Please enter a valid phone number with 7 digits"}</p>
             </div>
           </div>
 
@@ -251,6 +253,24 @@ function App() {
               </label>
             </div>
           </div>
+
+          <div className="flex flex-wrap -mx-3 mb-6">
+            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+              <ReCAPTCHA
+                sitekey="6LffubIZAAAAAE0i8SJCPGDamFlHh7NwrNr4vnwA"
+                onChange={event => setRecaptachaCompleted(true)}
+              />
+            </div>
+          </div>
+
+          <div className="flex flex-wrap -mx-3 mb-6">
+            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+              <button class={"bg-blue-500 text-white font-bold py-2 px-4 rounded cursor-not-allowed focus:outline-none " + (isRecaptachaCompleted ? "focus:shadow-outline  hover:bg-blue-700": "")} type="button">
+                Submit
+              </button>
+            </div>
+          </div>
+
         </form>
       </div>
     </div>
